@@ -1,0 +1,25 @@
+class test
+{
+private:
+	static test* m_instance;
+public:
+	static test* getinstance()
+	{
+		if (m_instance) {
+			return m_instance;
+		}
+		return new test();
+	}
+public:
+	void testfunction() {
+		cout << "function called" << endl;
+	}
+};
+
+test* test::m_instance = 0;
+
+int main()
+{
+	test *obj = test::getinstance();
+	obj->testfunction();
+}
