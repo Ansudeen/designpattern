@@ -1,0 +1,56 @@
+class animal
+{
+private:
+	string m_name;
+public:
+	animal(string name) :m_name(name) {}
+public:
+	virtual void getsound() = 0;
+};
+
+class cat :public animal
+{
+public:
+	cat(string name) :animal(name) {}
+public:
+	void getsound() {
+		cout << "mew" << endl;
+	}
+};
+class dog :public animal
+{
+public:
+	dog(string name) :animal(name) {}
+public:
+	void getsound() {
+		cout << "lol" << endl;
+	}
+};
+
+class animalfactory
+{
+public:
+	static animal* getanimal(pets mypets)
+	{
+		switch (mypets)
+		{
+		case CAT:
+			return new cat("mini");
+			break;
+		case DOG:
+			return new dog("jol");
+			break;
+		default:
+			return NULL;
+			break;
+		}
+	}
+};
+int main()
+{
+	animal *mypet = animalfactory::getanimal(CAT);
+	if (mypet) {
+		mypet->getsound();
+	}	
+	delete (mypet);
+}
