@@ -1,0 +1,98 @@
+// State class
+class CBaseState
+{
+public:
+    // Pure virtual function
+    virtual CBaseState* GetNextState() = 0;
+    // print the string
+    virtual    char* ToString() = 0;
+};
+
+// Concentrate Classes
+//////////////////////////////////////////////////////////////////////////
+// State Morning
+//////////////////////////////////////////////////////////////////////////
+class CMorning : public CBaseState
+{
+public:
+    virtual CBaseState* GetNextState();
+    virtual    char* ToString();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// State Evening
+//////////////////////////////////////////////////////////////////////////
+class CEvening : public CBaseState
+{
+public:
+    virtual CBaseState* GetNextState();
+    virtual    char* ToString();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// State night
+//////////////////////////////////////////////////////////////////////////
+class CNight: public CBaseState
+{
+public:
+    virtual CBaseState* GetNextState();
+    virtual    char* ToString();
+};
+
+// Context Class
+
+/////////////////////////////////////////////////////////////////////////
+// Context Class
+//////////////////////////////////////////////////////////////////////////
+
+class CSun
+{
+public:
+    CSun();
+    CSun(CBaseState* pContext /* Pass Allocated memory */);
+    ~CSun();
+    // Handles the next state
+    void StateChanged();
+    char* GetStateName();
+protected:
+    void DoCleanUp();
+    // Pointer which holds the current state
+    // Since this is and base class pointer
+    // of Concentrate classes, it can holds their objects
+    CBaseState* m_pState;
+};
+
+void CSun::StateChanged()
+{
+    if (m_pState)
+    {
+        // Getting Next State
+        CBaseState* pState = m_pState->GetNextState();
+        // de allocates the memory
+        delete m_pState;
+          m_pState = pState;
+    }
+}
+
+//Defining Next State
+//Calling the GetNextState virtual function depends on the object. Each object will return its next state.
+
+//Morning object’s next state:
+
+CBaseState* CMorning::GetNextState()
+{
+    return new CEvening;
+}
+
+//Evening object’s next state:
+CBaseState* CEvening::GetNextState()
+{
+    return new CNight;
+}
+
+// Night object’s next state:
+CBaseState* CNight::GetNextState()
+{
+    return new CMorning;
+}
+
